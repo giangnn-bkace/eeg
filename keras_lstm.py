@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, filename='log_'+str(test_index)+'.txt',
                         filemode='w', format='%(message)s')
 
 # path to the csv data file
-data_path = "data\Mura-Music.csv"
+data_path = "DataMura\Mura-Music.csv"
 
 BLOCK_SIZE = 6
 SAMPLE_SIZE = 2048
@@ -29,7 +29,7 @@ NUM_CLASSES = 3
 LEARNING_RATE = 0.001
 MOMENTUM = 0.9
 
-NUM_EPOCHS = 1000
+NUM_EPOCHS =300
 
 BATCH_SIZE = 100
 
