@@ -16,20 +16,20 @@ logging.basicConfig(level=logging.INFO, filename='log_'+str(test_index)+'.txt',
                         filemode='w', format='%(message)s')
 
 # path to the csv data file
-data_path = "DataMura\Mura-Music.csv"
+data_path = "data_1.csv"
 
 BLOCK_SIZE = 6
 SAMPLE_SIZE = 2048
-STEP_SIZE = 128
+STEP_SIZE = 32
 
-DROPOUT = 0.9
+DROPOUT = 0.5
 
 NUM_CLASSES = 3
 
 LEARNING_RATE = 0.001
 MOMENTUM = 0.9
 
-NUM_EPOCHS =1000
+NUM_EPOCHS = 1000
 
 BATCH_SIZE = 100
 
@@ -101,11 +101,11 @@ train_dataset = train_dataset.shuffle(NUM_TRAIN_SAMPLE)
 train_dataset = train_dataset.repeat().batch(BATCH_SIZE)
 #train_dataset = train_dataset.prefetch(buffer_size=PREFETCH_SIZE)
 
-test_dataset = test_dataset.batch(BATCH_SIZE).repeat()
+test_dataset = test_dataset.batch(1).repeat()
 test_dataset = test_dataset.prefetch(buffer_size=PREFETCH_SIZE)
 
 NUM_TEST_SAMPLE = len(y_test)
-TEST_PER_EPOCH_STEPS = int(np.ceil(NUM_TEST_SAMPLE/BATCH_SIZE))
+TEST_PER_EPOCH_STEPS = int(np.ceil(NUM_TEST_SAMPLE/1))
 
 
 
@@ -113,29 +113,26 @@ TEST_PER_EPOCH_STEPS = int(np.ceil(NUM_TEST_SAMPLE/BATCH_SIZE))
 model = tf.keras.Sequential()
 
 model.add(tf.keras.layers.Reshape((SAMPLE_SIZE, 1), input_shape=(SAMPLE_SIZE,)))
-model.add(tf.keras.layers.LSTM(100, return_sequences=False, input_shape=(SAMPLE_SIZE, 1)))
-
-
 #model.add(tf.keras.layers.AveragePooling1D(16))
-#model.add(tf.keras.layers.Conv1D(100, 16, activation='relu'))
+model.add(tf.keras.layers.Conv1D(100, 16, activation='relu'))
 #model.add(tf.keras.layers.MaxPooling1D(9))
-#model.add(tf.keras.layers.Conv1D(100, 10, activation='relu'))
-#model.add(tf.keras.layers.MaxPooling1D(8))
-#model.add(tf.keras.layers.Conv1D(160, 10, activation='relu'))
-#model.add(tf.keras.layers.Conv1D(160, 10, activation='relu'))
+model.add(tf.keras.layers.Conv1D(100, 10, activation='relu'))
+model.add(tf.keras.layers.MaxPooling1D(8))
+model.add(tf.keras.layers.Conv1D(160, 10, activation='relu'))
+model.add(tf.keras.layers.Conv1D(160, 10, activation='relu'))
 #model.add(tf.keras.layers.MaxPooling1D(3))
 #model.add(tf.keras.layers.LSTM(10, activation='relu', return_sequences=True))
 #model.add(tf.keras.layers.LSTM(10, activation='relu'))
 
 #model.add(tf.layers.Flatten())
 
-#model.add(tf.keras.layers.GlobalAveragePooling1D())
+model.add(tf.keras.layers.GlobalAveragePooling1D())
 #model.add(tf.keras.layers.Dropout(DROPOUT))
 #model.add(tf.keras.layers.Dense(128, activation='relu'))
 #model.add(tf.keras.layers.Dropout(DROPOUT))
 #model.add(tf.keras.layers.Dense(64, activation='relu'))
 model.add(tf.keras.layers.Dropout(DROPOUT))
-model.add(tf.keras.layers.Dense(NUM_CLASSES, activation='softmax'))
+model.add(tf.keras.layers.Dense(3, activation='softmax'))
 
 print(model.summary())
 
